@@ -1,37 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-name: Build Skin Changer APK
+    <uses-permission
+        android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [main]
+    <application
+        android:allowBackup="true"
+        android:label="Skin Changer"
+        android:theme="@style/AppTheme">
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
 
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-      - name: Install Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+        </activity>
 
-      - name: Install Gradle 8.7
-        run: |
-          wget https://services.gradle.org/distributions/gradle-8.7-bin.zip
-          unzip -q gradle-8.7-bin.zip
-          echo "$GITHUB_WORKSPACE/gradle-8.7/bin" >> "$GITHUB_PATH"
-
-      - name: Build debug APK
-        run: gradle assembleDebug --stacktrace
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: SkinChanger-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+    </application>
+</manifest>
 
